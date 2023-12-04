@@ -2,7 +2,7 @@ const colors = {
   red: "\x1b[31m",
   cyan: "\x1b[36m",
   white: "\x1b[37m",
-  green: "\x1b[22m",
+  green: "\x1b[32m",
   reset: "\x1B[0m",
 };
 
@@ -11,8 +11,8 @@ const log = (
   level: "ERROR" | "INFO" | "DEBUG" | "TRACE",
   err?: Error
 ) => {
-  let levelText = `[${colors.cyan}${level}${colors.reset}] `;
-  let finalMessage = `${new Date().toTimeString()} :: ${message} \r\n`;
+  let levelText;
+  let finalMessage = `${new Date().toTimeString()} :: ${message} `;
   switch (level) {
     case "INFO":
       levelText = `[${colors.cyan}${level}${colors.reset}] `;
@@ -22,19 +22,20 @@ const log = (
       break;
     case "ERROR":
       levelText = `[${colors.red}${level}${colors.reset}] `;
-      finalMessage.concat(`:: ${err?.message}`);
-      finalMessage.concat(`:: ${err?.stack}`);
+      finalMessage = finalMessage.slice(0, finalMessage.lastIndexOf("\r"));
+      finalMessage = finalMessage.concat(` :: ${err?.stack}`);
       break;
     case "TRACE":
-      levelText = `[${colors.red}${level}${colors.white}] `;
+      levelText = `[${colors.white}${level}${colors.white}] `;
       break;
-    default:
+    default: {
       const error = new Error("Invalid log level");
       levelText = `[${colors.red}${level}${colors.reset}] `;
-      finalMessage.concat(`:: ${error?.message}`);
-      finalMessage.concat(`:: ${error?.stack}`);
+      finalMessage = finalMessage.concat(`:: ${error?.message}`);
+      finalMessage = finalMessage.concat(`:: ${error?.stack}`);
+    }
   }
-  finalMessage = levelText + levelText;
+  finalMessage = levelText + finalMessage;
   console.log(finalMessage);
 };
 

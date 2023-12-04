@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Application } from "express";
+import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
 import HttpStatusCode from "./src/utils/HttpStatusCodes";
 import customRouter from "./src/routes/custom.routes";
@@ -6,7 +6,7 @@ import customRouter from "./src/routes/custom.routes";
 dotenv.config();
 
 const app: Application = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT ?? 8000;
 
 app.get("/", (req: Request, res: Response) => {
   res.status(HttpStatusCode.OK);
