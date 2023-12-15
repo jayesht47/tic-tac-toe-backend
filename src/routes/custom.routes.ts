@@ -1,5 +1,5 @@
 import express from "express";
-import log from "../middlewares/logging";
+const log = require("simpl-logger");
 const customRouter = express.Router();
 
 customRouter.get("/", (req, res, next) => {
